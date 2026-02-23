@@ -2,15 +2,15 @@ package services
 
 import (
  "fmt"
- "bottg/internal/models"
- "bottg/internal/repositories"
+ "telegrv/internal/models"
+ "telegrv/internal/interfaces"
 )
 
 type BotService struct {
- repo *repositories.MemoryRepo
+ repo interfaces.Repository
 }
 
-func NewBotService(repo *repositories.MemoryRepo) *BotService {
+func NewBotService(repo interfaces.Repository) *BotService {
  return &BotService{repo: repo}
 }
 

@@ -3,9 +3,9 @@ package main
 import (
  "log"
  "os"
- "bottg/internal/repositories"
- "bottg/internal/services"
-  "bottg/internal/handlers"
+ "telegrv/internal/repositories"
+ "telegrv/internal/services"
+  "telegrv/internal/handlers"
 
  tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
  "github.com/joho/godotenv"

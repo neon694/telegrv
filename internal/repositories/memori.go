@@ -1,6 +1,6 @@
 package repositories
 
-import "bottg/internal/models"
+import "telegrv/internal/models"
 
 type MemoryRepo struct {
  chats    []models.ChatID

@@ -3,17 +3,17 @@ package handlers
 import (
  "log"
  "strings"
- "bottg/internal/models"
- "bottg/internal/services"
+ "telegrv/internal/models"
+ "telegrv/internal/interfaces"
  tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 type TelegramHandler struct {
  bot     *tgbotapi.BotAPI
- service *services.BotService
+ service interfaces.BotService
 }
 
-func NewTelegramHandler(bot *tgbotapi.BotAPI, service *services.BotService) *TelegramHandler {
+func NewTelegramHandler(bot *tgbotapi.BotAPI, service interfaces.BotService) *TelegramHandler {
  return &TelegramHandler{bot: bot, service: service}
 }
 
@@ -45,25 +45,26 @@ func (h *TelegramHandler) Start() {
   var replyText string
   var replyMarkup tgbotapi.ReplyKeyboardMarkup
 
-  if strings.HasPrefix(normalized, "/start") {
-   replyText = h.service.HandleStart(models.ChatID(chatID), userName)
-   replyMarkup = h.getMainMenuKeyboard()
-  } else if strings.HasPrefix(normalized, "/menu") {
-   replyText = h.service.HandleMenu()
-   replyMarkup = h.getMainMenuKeyboard()
-  } else if strings.HasPrefix(normalized, "/help") {
-   replyText = h.service.HandleHelp()
-   replyMarkup = h.getMainMenuKeyboard()
-  } else if strings.HasPrefix(normalized, "/info") {
-   replyText = h.service.HandleInfo(userName, models.ChatID(chatID))
-   replyMarkup = h.getMainMenuKeyboard()
-  } else if strings.HasPrefix(normalized, "/stats") {
-   replyText = h.service.HandleStats()
-   replyMarkup = h.getMainMenuKeyboard()
-  } else {
-   replyText = h.service.HandleMessage(models.ChatID(chatID), originalText, userName)
-   replyMarkup = h.getMainMenuKeyboard()
-  }
+  switch normalized {
+case "/start":
+    replyText = h.service.HandleStart(models.ChatID(chatID), userName)
+    replyMarkup = h.getMainMenuKeyboard()
+case "/menu":
+    replyText = h.service.HandleMenu()
+    replyMarkup = h.getMainMenuKeyboard()
+case "/help":
+    replyText = h.service.HandleHelp()
+    replyMarkup = h.getMainMenuKeyboard()
+case "/info":
+    replyText = h.service.HandleInfo(userName, models.ChatID(chatID))
+    replyMarkup = h.getMainMenuKeyboard()
+case "/stats":
+    replyText = h.service.HandleStats()
+    replyMarkup = h.getMainMenuKeyboard()
+default:
+    replyText = h.service.HandleMessage(models.ChatID(chatID), originalText, userName)
+    replyMarkup = h.getMainMenuKeyboard()
+}
 
   if replyText == "" {
    replyText = "I received your message but couldn't process it. Try /help"

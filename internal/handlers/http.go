@@ -6,7 +6,7 @@ import (
  "net/http"
  "strconv"
 
- "bottg/internal/repositories"
+ "telegrv/internal/repositories"
  tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 

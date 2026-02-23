@@ -1,4 +1,4 @@
-module bottg
+module telegrv
 
 go 1.25.6
 
